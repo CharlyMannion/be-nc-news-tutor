@@ -4,7 +4,7 @@ const {
   commentData,
   userData,
 } = require("../data/index.js");
-const { formatTime, createLookUp } = require('../utils/data-manipulation')
+const { formatTime, createLookUp, formatComments } = require('../utils/data-manipulation')
 
 exports.seed = function (knex) {
   // add seeding functionality here
@@ -24,9 +24,8 @@ exports.seed = function (knex) {
     })
     .then((insertedArticles) => {
       const lookUpArticles = createLookUp(insertedArticles);
-      console.log(lookUpArticles);
+      const formattedComments = formatComments(commentData, lookUpArticles)
       return knex('comments')
-      .insert(commentData)
-      .returning('*')
+      .insert(formattedComments)
     })
 };

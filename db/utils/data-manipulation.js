@@ -15,10 +15,9 @@ const createLookUp = (articles) => {
 }
 
 const formatComments = (comments, lookUp) => {
-    if (comments.length < 1) return [];
-    const formattedComments = [];
-    const {created_by, created_at, belongs_to, ...rest} = comments[0];
-    formattedComments.push({...rest, author: created_by, created_at: new Date(created_at), article_id: lookUp[belongs_to]});
+    const formattedComments = comments.map(({ created_by, created_at, belongs_to, ...rest }) => {
+        return { ...rest, author: created_by, created_at: new Date(created_at), article_id: lookUp[belongs_to]}
+    });
     return formattedComments;
 }
 
