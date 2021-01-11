@@ -1,3 +1,9 @@
+const { getTopics } = require('../models/topics.models');
+
 exports.getTopics = (req, res, next) => {
-    res.send()
+    getTopics()
+    .then((topics) => {
+      res.send({ topics });
+    })
+    .catch(next);
 };

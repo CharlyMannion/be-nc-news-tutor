@@ -26,6 +26,17 @@ describe("app", () => {
                 it("status 200: responds with status 200", () => {
                     return request(app).get("/api/topics").expect(200);
                 });
+                it('returns status 200 and an object containing an array of topics', () => {
+                    return request(app)
+                      .get('/api/topics')
+                      .expect(200)
+                      .then(({ body: { topics } }) => {
+                        expect(topics).toHaveLength(3);
+                        expect(Object.keys(topics[0])).toEqual(
+                          expect.arrayContaining(['description', 'slug'])
+                        );
+                      });
+                  });
             });
         });
     });
