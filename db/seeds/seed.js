@@ -4,6 +4,7 @@ const {
   commentData,
   userData,
 } = require("../data/index.js");
+const { formatTime, createLookUp } = require('../utils/data-manipulation')
 
 exports.seed = function (knex) {
   // add seeding functionality here
@@ -16,8 +17,14 @@ exports.seed = function (knex) {
       return Promise.all([topicsInsertion, usersInsertion])
     })
     .then(() => {
+      const formattedArticles = formatTime(articleData)
       return knex('articles')
-      .insert(articleData)
+      .insert(formattedArticles)
       .returning('*')
-    });
+    })
+    .then((insertedArticles) => {
+      return knex('comments')
+      .insert(commentData)
+      .returning('*')
+    })
 };

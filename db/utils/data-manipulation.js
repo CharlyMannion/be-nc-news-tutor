@@ -7,4 +7,11 @@ const formatTime = (articles) => {
     return formattedArticles;
 }
 
-module.exports = { formatTime };
+const createLookUp = (comments) => {
+    return comments.reduce((lookUp, {belongs_to, comment_id}) => {
+        lookUp[belongs_to] = comment_id;
+        return lookUp;
+    }, {})
+}
+
+module.exports = { formatTime, createLookUp };
