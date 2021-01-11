@@ -23,6 +23,8 @@ exports.seed = function (knex) {
       .returning('*')
     })
     .then((insertedArticles) => {
+      const lookUpArticles = createLookUp(insertedArticles);
+      console.log(lookUpArticles);
       return knex('comments')
       .insert(commentData)
       .returning('*')

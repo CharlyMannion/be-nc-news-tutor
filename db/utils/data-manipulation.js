@@ -7,11 +7,19 @@ const formatTime = (articles) => {
     return formattedArticles;
 }
 
-const createLookUp = (comments) => {
-    return comments.reduce((lookUp, {belongs_to, comment_id}) => {
-        lookUp[belongs_to] = comment_id;
+const createLookUp = (articles) => {
+    return articles.reduce((lookUp, {title, article_id}) => {
+        lookUp[title] = article_id;
         return lookUp;
     }, {})
 }
 
-module.exports = { formatTime, createLookUp };
+const formatComments = (comments, lookUp) => {
+    if (comments.length < 1) return [];
+    const formattedComments = [];
+    const {created_by, created_at, belongs_to, ...rest} = comments[0];
+    formattedComments.push({...rest, author: created_by, created_at: new Date(created_at), article_id: lookUp[belongs_to]});
+    return formattedComments;
+}
+
+module.exports = { formatTime, createLookUp, formatComments };
