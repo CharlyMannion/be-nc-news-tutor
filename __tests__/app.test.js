@@ -1,4 +1,4 @@
-const request = require("supertest");
+const request = require("supertest")
 const app = require("../app");
 const connection = require("../db/connection");
 
@@ -38,6 +38,32 @@ describe("app", () => {
                       });
                   });
             });
+            describe("POST",()=>{
+                it("status: 201: responds with status 201",()=>{
+                    return request(app)
+                        .post('/api/topics')
+                        .send({slug:"test", description:"I'm a test"})
+                        .expect(201)
+                })
+                it("status: 201: responds with newly posted topic",()=>{
+                    return request(app)
+                        .post('/api/topics')
+                        .send({slug:"test", description:"I'm a test"})
+                        .expect(201)
+                        .then(({body:{topic}})=>{
+                            expect(topic).toEqual({slug:"test", description:"I'm a test"})
+                        })
+                })
+                it("status 400: for missing slug",() =>{
+                    return request(app)
+                    .post('/api/topics')
+                    .send({description:"I'm a test"})
+                    .expect(400)
+                    .then(({body:{msg}})=>{
+                        expect(msg).toBe("Bad request.")
+                    })
+                })
+            })
         });
     });
 });
