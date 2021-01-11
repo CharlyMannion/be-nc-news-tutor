@@ -7,14 +7,17 @@ const {
 
 exports.seed = function (knex) {
   // add seeding functionality here
-  return knex.migrate.rollback()
-  .then(() => knex.migrate.latest())
-  .then(() => {
-    return knex('topics')
-    .insert(topicData)
-    .returning('*');
-  })
-  .then((topicRows) => {
-    console.log(topicRows)
-  })
+  return knex.migrate
+    .rollback()
+    .then(() => knex.migrate.latest())
+    .then(() => {
+      const topicsInsertion = knex("topics").insert(topicData);
+      const usersInsertion = knex("users").insert(userData);
+      return Promise.all([topicsInsertion, usersInsertion])
+    })
+    .then(() => {
+      return knex('articles')
+      .insert(articleData)
+      .returning('*')
+    });
 };

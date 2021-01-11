@@ -9,7 +9,8 @@
     "migrate-rollback": "knex migrate:rollback",
     "migrate-latest": "knex migrate:latest",
     "seed": "knex seed:run",
-    "test-app": "jest __tests__/app.test.js"
+    "test-app": "jest __tests__/app.test.js",
+    "test-utils": "jest __tests__/utils.test.js"
   },
   "repository": {
     "type": "git",
