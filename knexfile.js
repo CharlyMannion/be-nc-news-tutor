@@ -1,3 +1,5 @@
+// our connection to the database
+
 const ENV = process.env.NODE_ENV || "development";
 
 const baseConfig = {
