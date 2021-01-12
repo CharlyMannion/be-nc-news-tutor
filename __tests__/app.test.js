@@ -4,11 +4,11 @@ const connection = require("../db/connection");
 
 beforeEach(() => {
     return connection.seed.run();
-});
+})
 
 afterAll(() => {
     return connection.destroy();
-});
+})
 
 describe("app", () => {
     it("status: 404 for invalid path", () => {
@@ -17,7 +17,7 @@ describe("app", () => {
             .expect(404)
             .then(({ body: { msg } }) => {
                 expect(msg).toBe("Oopsie, Path Not Found!");
-            });
+            })
     })
 
     describe("/api", () => {
@@ -25,7 +25,7 @@ describe("app", () => {
             describe("GET", () => {
                 it("status 200: responds with status 200", () => {
                     return request(app).get("/api/topics").expect(200);
-                });
+                })
                 it('returns status 200 and an object containing an array of topics', () => {
                     return request(app)
                       .get('/api/topics')
@@ -34,10 +34,11 @@ describe("app", () => {
                         expect(topics).toHaveLength(3);
                         expect(Object.keys(topics[0])).toEqual(
                           expect.arrayContaining(['description', 'slug'])
-                        );
-                      });
-                  });
-            });
+                        )
+                      })
+                  })
+            })
+
             describe("POST",()=>{
                 it("status: 201: responds with status 201",()=>{
                     return request(app)
@@ -91,6 +92,6 @@ describe("app", () => {
                 //     })
                 // })
             })
-        });
-    });
-});
+        })
+    })
+})
