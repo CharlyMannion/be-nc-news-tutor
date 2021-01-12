@@ -159,5 +159,26 @@ describe("app", () => {
         });
       });
     });
+
+    describe("/articles/:article_id", () => {
+      describe("DELETE", () => {
+        it("status 204: returns 204", () => {
+          return request(app)
+            .delete("/api/articles/1")
+            .expect(204)
+        });
+        it("status 204: deletes the specified article 204", () => {
+            return request(app)
+              .delete("/api/articles/1")
+              .expect(204)
+              .then(() => {
+                  return connection('articles').first().where('article_id', "=", 1 )
+              })
+              .then((article) => {
+                  expect(article).toBe(undefined)
+              })
+          });
+      });
+    });
   });
 });
