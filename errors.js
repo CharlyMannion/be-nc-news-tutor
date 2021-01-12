@@ -1,9 +1,10 @@
 // error handling middleware functions (EHMF):
 
-// exports.handleCustomErrors = (err, req, res, next) => {
-//     if (err.status) res.status(err.status).send({ msg: err.msg });
-//     else next(err);
-// };
+exports.handleCustomErrors = (err, req, res, next) => {
+    console.log("in the custom error")
+    if (err.status) res.status(err.status).send({ msg: err.msg });
+    else next(err);
+};
 
 exports.handle400s = (err, req, res, next) => {
 const codes = ['23502', '23505']
