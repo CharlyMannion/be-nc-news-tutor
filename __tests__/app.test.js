@@ -63,6 +63,24 @@ describe("app", () => {
                         expect(msg).toBe("Bad request.")
                     })
                 })
+                it("status 400: for failing schema validation (not a unique slug)",() =>{
+                    return request(app)
+                    .post('/api/topics')
+                    .send({slug: "cats", description:"Not dogs"})
+                    .expect(400)
+                    .then(({body:{msg}})=>{
+                        expect(msg).toBe("Bad request.")
+                    })
+                })
+                // it("status 400: for additional fields",() =>{
+                //     return request(app)
+                //     .post('/api/topics')
+                //     .send({slug:"test", description:"I'm a test", im_a_test:"I'm a test"})
+                //     .expect(400)
+                //     .then(({body:{msg}})=>{
+                //         expect(msg).toBe("Bad request.")
+                //     })
+                // })
             })
         });
     });
