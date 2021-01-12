@@ -13,5 +13,4 @@ app.all('/*', handleInvalidPath);
 app.use(handle400s)
 app.use(handle500s)
 
-
 module.exports = app;

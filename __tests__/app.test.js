@@ -72,6 +72,15 @@ describe("app", () => {
                         expect(msg).toBe("Bad request.")
                     })
                 })
+                // it("status 400: for incorrect data type",() =>{
+                //     return request(app)
+                //     .post('/api/topics')
+                //     .send({slug: 5, description: 4})
+                //     .expect(400)
+                //     .then(({body:{msg}})=>{
+                //         expect(msg).toBe("Bad request.")
+                //     })
+                // })
                 // it("status 400: for additional fields",() =>{
                 //     return request(app)
                 //     .post('/api/topics')
