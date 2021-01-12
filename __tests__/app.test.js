@@ -163,21 +163,35 @@ describe("app", () => {
     describe("/articles/:article_id", () => {
       describe("DELETE", () => {
         it("status 204: returns 204", () => {
+          return request(app).delete("/api/articles/1").expect(204);
+        });
+        it("status 204: deletes the specified article 204", () => {
           return request(app)
             .delete("/api/articles/1")
             .expect(204)
+            .then(() => {
+              return connection("articles").first().where("article_id", "=", 1);
+            })
+            .then((article) => {
+              expect(article).toBe(undefined);
+            });
         });
-        it("status 204: deletes the specified article 204", () => {
-            return request(app)
-              .delete("/api/articles/1")
-              .expect(204)
-              .then(() => {
-                  return connection('articles').first().where('article_id', "=", 1 )
-              })
-              .then((article) => {
-                  expect(article).toBe(undefined)
-              })
-          });
+        it("status 400: returns an error if the article path is invalid", () => {
+          return request(app)
+            .delete("/api/articles/notAnId")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad request.");
+            });
+        });
+        it("status 404: returns an error if the article is potentially valid but does not exist yet", () => {
+          return request(app)
+            .delete("/api/articles/9999")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Article not found.");
+            });
+        });
       });
     });
   });
