@@ -333,5 +333,13 @@ describe("app", () => {
         });
       });
     });
+
+    describe("/articles/:article_id/comments", () => {
+      describe("GET", () => {
+        it("status 200: responds with status 200", () => {
+          return request(app).get("/api/articles/1/comments").expect(200);
+        });
+      });
+    });
   });
 });
