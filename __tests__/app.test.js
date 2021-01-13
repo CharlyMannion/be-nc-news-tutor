@@ -411,6 +411,14 @@ describe("app", () => {
               expect(response.body.msg).toBe("Article not found.");
             });
         });
+        it("status 400: BAD REQUEST returns an error when sort_by value is not valid", () => {
+          return request(app)
+            .get("/api/articles/1/comments?sort_by=age")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad request.");
+            });
+        });
       });
     });
   });
