@@ -97,7 +97,7 @@ describe("app", () => {
       });
 
       describe("INVALID METHODS", () => {
-        it("status 405: for invalid methods DELETE, PATCH and PUT", () => {
+        it("status 405: for invalid methods DELETE, PATCH and PUT for /api/topics", () => {
           const invalidMethods = ["delete", "patch", "put"];
 
           const promises = invalidMethods.map((method) => {
@@ -144,7 +144,7 @@ describe("app", () => {
       });
 
       describe("INVALID METHODS", () => {
-        it("status 405: for invalid methods DELETE, PATCH and PUT", () => {
+        it("status 405: for invalid methods POST DELETE, PATCH and PUT for /users/:username", () => {
           const invalidMethods = ["post", "delete", "patch", "put"];
 
           const promises = invalidMethods.map((method) => {
@@ -294,7 +294,7 @@ describe("app", () => {
               expect(response.body.msg).toBe("Article Not Found.");
             });
         });
-        it("status 400: BAD REQUEST -> malformed body/ missing fields responds with an error message", () => {
+        it("status 400: BAD REQUEST -> malformed body responds with an error message when no body", () => {
           return request(app)
             .patch("/api/articles/1")
             .send({})
@@ -303,7 +303,7 @@ describe("app", () => {
               expect(msg).toBe("Bad Request: malformed/ missing body.");
             });
         });
-        it("status 400: for additional fields", () => {
+        it("status 400: BAD REQUEST -> malformed body for additional fields", () => {
           return request(app)
             .patch("/api/articles/1")
             .send({
@@ -314,6 +314,22 @@ describe("app", () => {
             .then(({ body: { msg } }) => {
               expect(msg).toBe("Bad Request: malformed/ missing body.");
             });
+        });
+      });
+
+      describe("INVALID METHODS", () => {
+        it("status 405: for invalid methods POST and PUT for /articles/:article_id", () => {
+          const invalidMethods = ["post", "put"];
+
+          const promises = invalidMethods.map((method) => {
+            return request(app)
+              [method]("/api/articles/:article_id")
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("Method Not Allowed.");
+              });
+          });
+          return Promise.all(promises);
         });
       });
     });
