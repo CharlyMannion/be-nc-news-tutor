@@ -43,13 +43,12 @@ exports.amendArticleById = (article_id, inc_votes) => {
         .from("articles")
         .where("articles.article_id", article_id)
         .then((article) => {
-          //   if (article.length < 1)
-          //     return Promise.reject({
-          //       status: 404,
-          //       msg: "Article Not Found!",
-          //     });
-          //   else return article;
-          return article;
+          if (!article)
+            return Promise.reject({
+              status: 404,
+              msg: "Article Not Found.",
+            });
+          else return article;
         });
     });
 };

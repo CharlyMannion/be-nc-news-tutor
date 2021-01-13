@@ -276,6 +276,24 @@ describe("app", () => {
               expect(article.votes).toBe(98);
             });
         });
+        it("status 400: BAD REQUEST -> responds with an error message if the article_id is invalid", () => {
+          return request(app)
+            .patch("/api/articles/notAnId")
+            .send({ inc_votes: -2 })
+            .expect(400)
+            .then((response) => {
+              expect(response.body.msg).toBe("Bad request.");
+            });
+        });
+        it("status 404: NOT FOUND --> responds with an error message if the requested articles does not exist", () => {
+          return request(app)
+            .patch("/api/articles/999")
+            .send({ inc_votes: -2 })
+            .expect(404)
+            .then((response) => {
+              expect(response.body.msg).toBe("Article Not Found.");
+            });
+        });
       });
     });
   });
