@@ -227,7 +227,7 @@ describe("app", () => {
                 topic: "mitch",
                 author: "butter_bridge",
                 body: "I find this existence challenging",
-                created_at: "2018-11-15T12:21:54.171Z",
+                created_at: new Date(1542284514171).toISOString(),
                 votes: 100,
                 comment_count: "13",
               };
