@@ -419,6 +419,14 @@ describe("app", () => {
               expect(msg).toBe("Bad request.");
             });
         });
+        it("status 400: BAD REQUEST when order query is not asc or desc", () => {
+          return request(app)
+            .get("/api/articles/1/comments?order=ascending")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad request: invalid order query.");
+            });
+        });
       });
     });
   });
