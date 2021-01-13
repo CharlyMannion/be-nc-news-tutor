@@ -11,3 +11,7 @@ exports.getArticlesComments = (req, res, next) => {
     })
     .catch(next);
 };
+
+exports.postArticleComment = (req, res, next) => {
+  res.send(201);
+};

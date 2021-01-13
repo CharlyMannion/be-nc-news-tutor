@@ -428,6 +428,15 @@ describe("app", () => {
             });
         });
       });
+
+      describe("POST", () => {
+        it("status: 201: responds with status 201", () => {
+          return request(app)
+            .post("/api/articles/1/comments")
+            .send({ username: "test", body: "I'm a test" })
+            .expect(201);
+        });
+      });
     });
   });
 });
