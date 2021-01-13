@@ -4,8 +4,8 @@ const {
 
 exports.getArticlesComments = (req, res, next) => {
   const { article_id } = req.params;
-  //   const { sort_by } = req.query;
-  selectCommentsByArticleId(article_id)
+  const { order } = req.query;
+  selectCommentsByArticleId(article_id, order)
     .then((comments) => {
       res.send({ comments });
     })

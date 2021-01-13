@@ -365,6 +365,16 @@ describe("app", () => {
               });
             });
         });
+        it("status 200: returns an object containing an array of comments sorted by created_at in ascending order when query provided", () => {
+          return request(app)
+            .get("/api/articles/1/comments?order=asc")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).toBeSortedBy("created_at", {
+                ascending: true,
+              });
+            });
+        });
       });
     });
   });
