@@ -12,3 +12,13 @@ exports.removeArticleById = (article_id) => {
         });
     });
 };
+
+exports.fetchArticleById = (article_id) => {
+  return connection
+    .first("articles.*")
+    .from("articles")
+    .where("articles.article_id", article_id)
+    .count("comments AS comment_count")
+    .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
+    .groupBy("articles.article_id");
+};

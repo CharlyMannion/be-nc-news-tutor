@@ -1,10 +1,22 @@
-const { removeArticleById } = require('../models/articles.models');
+const {
+  fetchArticleById,
+  removeArticleById,
+} = require("../models/articles.models");
 
 exports.deleteArticleById = (req, res, next) => {
-    const { article_id } = req.params;
-    removeArticleById(article_id)
+  const { article_id } = req.params;
+  removeArticleById(article_id)
     .then(() => {
-        res.sendStatus(204)
+      res.sendStatus(204);
     })
-    .catch(next)
-}
+    .catch(next);
+};
+
+exports.getArticleById = (req, res, next) => {
+  const { article_id } = req.params;
+  fetchArticleById(article_id)
+    .then((article) => {
+      res.send({ article });
+    })
+    .catch(next);
+};

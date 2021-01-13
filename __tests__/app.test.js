@@ -193,6 +193,48 @@ describe("app", () => {
             });
         });
       });
+      describe("GET", () => {
+        it("status 200: responds with status 200", () => {
+          return request(app).get("/api/articles/1").expect(200);
+        });
+        it("status 200: responds with an object with the correct keys", () => {
+          return request(app)
+            .get("/api/articles/1")
+            .expect(200)
+            .then(({ body: { article } }) => {
+              expect(Object.keys(article)).toEqual(
+                expect.arrayContaining([
+                  "article_id",
+                  "title",
+                  "body",
+                  "votes",
+                  "topic",
+                  "author",
+                  "created_at",
+                  "comment_count",
+                ])
+              );
+            });
+        });
+        it("status 200: responds with the correct article object", () => {
+          return request(app)
+            .get("/api/articles/1")
+            .expect(200)
+            .then(({ body: { article } }) => {
+              const expectedArticle = {
+                article_id: 1,
+                title: "Living in the shadow of a great man",
+                topic: "mitch",
+                author: "butter_bridge",
+                body: "I find this existence challenging",
+                created_at: "2018-11-15T12:21:54.171Z",
+                votes: 100,
+                comment_count: "13",
+              };
+              expect(article).toEqual(expectedArticle);
+            });
+        });
+      });
     });
   });
 });
