@@ -395,6 +395,22 @@ describe("app", () => {
               });
             });
         });
+        it("status 400: BAD REQUEST -> responds with an error message if the article_id is invalid", () => {
+          return request(app)
+            .get("/api/articles/notAnId/comments")
+            .expect(400)
+            .then((response) => {
+              expect(response.body.msg).toBe("Bad request.");
+            });
+        });
+        it("status 404: NOT FOUND -> responds with an error message if the article does not exist", () => {
+          return request(app)
+            .get("/api/articles/999/comments")
+            .expect(404)
+            .then((response) => {
+              expect(response.body.msg).toBe("Article not found.");
+            });
+        });
       });
     });
   });

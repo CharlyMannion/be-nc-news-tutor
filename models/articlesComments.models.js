@@ -9,6 +9,11 @@ exports.selectCommentsByArticleId = (article_id, sentOrder, sentSortBy) => {
     .orderBy(sort_by, order)
     .returning("*")
     .then((comments) => {
+      if (comments.length < 1)
+        return Promise.reject({
+          status: 404,
+          msg: "Article not found.",
+        });
       return comments;
     });
 };
