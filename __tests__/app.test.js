@@ -234,6 +234,14 @@ describe("app", () => {
               expect(article).toEqual(expectedArticle);
             });
         });
+        it("status 404: NOT FOUND -> responds with an error message if the requested articles does not exist", () => {
+          return request(app)
+            .get("/api/articles/999")
+            .expect(404)
+            .then((response) => {
+              expect(response.body.msg).toBe("Article Not Found.");
+            });
+        });
       });
     });
   });

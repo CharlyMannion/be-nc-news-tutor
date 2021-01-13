@@ -20,5 +20,13 @@ exports.fetchArticleById = (article_id) => {
     .where("articles.article_id", article_id)
     .count("comments AS comment_count")
     .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
-    .groupBy("articles.article_id");
+    .groupBy("articles.article_id")
+    .then((article) => {
+      if (!article)
+        return Promise.reject({
+          status: 404,
+          msg: "Article Not Found.",
+        });
+      return article;
+    });
 };
