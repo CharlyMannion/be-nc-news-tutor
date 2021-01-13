@@ -267,6 +267,15 @@ describe("app", () => {
               expect(article.votes).toBe(102);
             });
         });
+        it("status 200: works for negative numbers", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: -2 })
+            .expect(200)
+            .then(({ body: { article } }) => {
+              expect(article.votes).toBe(98);
+            });
+        });
       });
     });
   });
