@@ -32,6 +32,12 @@ exports.fetchArticleById = (article_id) => {
 };
 
 exports.amendArticleById = (article_id, inc_votes) => {
+  if (inc_votes === undefined) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request: malformed/ missing body.",
+    });
+  }
   return connection
     .select("articles.*")
     .from("articles")

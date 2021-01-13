@@ -294,6 +294,15 @@ describe("app", () => {
               expect(response.body.msg).toBe("Article Not Found.");
             });
         });
+        it("status 400: BAD REQUEST -> malformed body/ missing fields responds with an error message", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({})
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad Request: malformed/ missing body.");
+            });
+        });
       });
     });
   });
