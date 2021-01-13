@@ -339,6 +339,22 @@ describe("app", () => {
         it("status 200: responds with status 200", () => {
           return request(app).get("/api/articles/1/comments").expect(200);
         });
+        it("returns status 200 and object containing array of comments", () => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(Object.keys(comments[0])).toEqual(
+                expect.arrayContaining([
+                  "comment_id",
+                  "votes",
+                  "created_at",
+                  "author",
+                  "body",
+                ])
+              );
+            });
+        });
       });
     });
   });
