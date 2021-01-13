@@ -339,7 +339,7 @@ describe("app", () => {
         it("status 200: responds with status 200", () => {
           return request(app).get("/api/articles/1/comments").expect(200);
         });
-        it("returns status 200 and object containing array of comments", () => {
+        it("status 200: returns an object containing array of comments", () => {
           return request(app)
             .get("/api/articles/1/comments")
             .expect(200)
@@ -353,6 +353,16 @@ describe("app", () => {
                   "body",
                 ])
               );
+            });
+        });
+        it("status 200: returns an object containing an array of comments sorted by created_at in descending order as default", () => {
+          return request(app)
+            .get("/api/articles/1/comments")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).toBeSortedBy("created_at", {
+                descending: true,
+              });
             });
         });
       });
