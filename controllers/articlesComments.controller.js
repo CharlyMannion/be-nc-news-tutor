@@ -1,5 +1,6 @@
 const {
   selectCommentsByArticleId,
+  addArticleComment,
 } = require("../models/articlesComments.models");
 
 exports.getArticlesComments = (req, res, next) => {
@@ -13,5 +14,11 @@ exports.getArticlesComments = (req, res, next) => {
 };
 
 exports.postArticleComment = (req, res, next) => {
-  res.send(201);
+  const { article_id } = req.params;
+  const { body, username } = req.body;
+  addArticleComment(article_id, body, username)
+    .then((comment) => {
+      res.status(201).send({ comment });
+    })
+    .catch(next);
 };

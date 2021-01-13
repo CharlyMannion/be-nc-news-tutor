@@ -433,8 +433,18 @@ describe("app", () => {
         it("status: 201: responds with status 201", () => {
           return request(app)
             .post("/api/articles/1/comments")
-            .send({ username: "test", body: "I'm a test" })
+            .send({ username: "icellusedkars", body: "I'm a test" })
             .expect(201);
+        });
+        it("status: 201: responds with status 201", () => {
+          return request(app)
+            .post("/api/articles/1/comments")
+            .send({ username: "icellusedkars", body: "I'm a test" })
+            .expect(201)
+            .then((comment) => {
+              expect(comment.body.comment.author).toBe("icellusedkars");
+              expect(comment.body.comment.body).toBe("I'm a test");
+            });
         });
       });
     });

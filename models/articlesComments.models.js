@@ -2,7 +2,6 @@ const connection = require("../db/connection");
 
 exports.selectCommentsByArticleId = (article_id, sentOrder, sentSortBy) => {
   const order = sentOrder || "desc";
-  //   console.log(sentOrder, "sent order");
   const sort_by = sentSortBy || "created_at";
   const validOrders = ["asc", "desc"];
   if (validOrders.includes(order)) {
@@ -25,4 +24,14 @@ exports.selectCommentsByArticleId = (article_id, sentOrder, sentSortBy) => {
       msg: "Bad request: invalid order query.",
     });
   }
+};
+
+exports.addArticleComment = (article_id, body, username) => {
+  const author = username;
+  return connection("comments")
+    .insert({ body, article_id, author })
+    .returning("*")
+    .then((comment) => {
+      return comment[0];
+    });
 };
