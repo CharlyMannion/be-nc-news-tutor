@@ -99,15 +99,15 @@ You will work through the first endpoint in your pair and then diverge for the r
 _details for each endpoint are provided below_
 
 ```http
-GET /api/topics
+GET /api/topics -> COMPLETE
 
 >>> Time to go solo! <<<
 
-GET /api/users/:username
+GET /api/users/:username -> COMPLETE
 
-DELETE /api/articles/:article_id
-PATCH /api/articles/:article_id
-GET /api/articles/:article_id
+DELETE /api/articles/:article_id -> COMPLETE
+PATCH /api/articles/:article_id -> COMPLETE
+GET /api/articles/:article_id -> COMPLETE
 
 POST /api/articles/:article_id/comments
 GET /api/articles/:article_id/comments
@@ -121,7 +121,7 @@ DELETE /api/comments/:comment_id
 GET /api
 
 DELETE /api/articles/:article_id
-POST /api/topics
+POST /api/topics -> COMPLETE (bar two optional errors to handle)
 POST /api/users
 GET /api/users
 ```
@@ -166,7 +166,6 @@ GET /api/topics
 ---
 
 **Please now bid farewell to your pair and continue on this sprint working solo. Ensure that you fork your partner's repo so you don't run into merge conflicts.**
-
 
 ```http
 GET /api/users/:username
@@ -337,7 +336,6 @@ GET /api
 Make sure your application and your database is hosted using Heroku
 
 See the hosting.md file in this repo for more guidance
-
 
 #### Pagination
 
