@@ -30,3 +30,26 @@ exports.fetchArticleById = (article_id) => {
       return article;
     });
 };
+
+exports.amendArticleById = (article_id, inc_votes) => {
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .where("articles.article_id", article_id)
+    .increment("votes", inc_votes)
+    .then(() => {
+      return connection
+        .first("articles.*")
+        .from("articles")
+        .where("articles.article_id", article_id)
+        .then((article) => {
+          //   if (article.length < 1)
+          //     return Promise.reject({
+          //       status: 404,
+          //       msg: "Article Not Found!",
+          //     });
+          //   else return article;
+          return article;
+        });
+    });
+};

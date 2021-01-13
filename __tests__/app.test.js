@@ -251,6 +251,23 @@ describe("app", () => {
             });
         });
       });
+      describe("PATCH", () => {
+        it("status 200: responds with status 200", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: 2 })
+            .expect(200);
+        });
+        it("status 200: responds with the specified article with votes patched with the specified number of votes", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({ inc_votes: 2 })
+            .expect(200)
+            .then(({ body: { article } }) => {
+              expect(article.votes).toBe(102);
+            });
+        });
+      });
     });
   });
 });
