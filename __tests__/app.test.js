@@ -375,6 +375,26 @@ describe("app", () => {
               });
             });
         });
+        it("status 200: returns an object containing an array of comments sorted by votes when query provided", () => {
+          return request(app)
+            .get("/api/articles/1/comments?sort_by=votes")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).toBeSortedBy("votes", {
+                descending: true,
+              });
+            });
+        });
+        it("status 200: returns an object containing an array of comments sorted by author in ascending when query provided", () => {
+          return request(app)
+            .get("/api/articles/1/comments?sort_by=author&order=asc")
+            .expect(200)
+            .then(({ body: { comments } }) => {
+              expect(comments).toBeSortedBy("author", {
+                ascending: true,
+              });
+            });
+        });
       });
     });
   });
