@@ -31,8 +31,9 @@ exports.fetchArticleById = (article_id) => {
     });
 };
 
-exports.amendArticleById = (article_id, inc_votes) => {
-  if (inc_votes === undefined) {
+exports.amendArticleById = (article_id, reqBody) => {
+  const inc_votes = reqBody.inc_votes;
+  if (inc_votes === undefined || Object.keys(reqBody).length > 1) {
     return Promise.reject({
       status: 400,
       msg: "Bad Request: malformed/ missing body.",

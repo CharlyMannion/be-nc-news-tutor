@@ -303,6 +303,18 @@ describe("app", () => {
               expect(msg).toBe("Bad Request: malformed/ missing body.");
             });
         });
+        it("status 400: for additional fields", () => {
+          return request(app)
+            .patch("/api/articles/1")
+            .send({
+              inc_votes: 1,
+              im_a_test: "I'm a test",
+            })
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad Request: malformed/ missing body.");
+            });
+        });
       });
     });
   });

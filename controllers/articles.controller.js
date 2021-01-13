@@ -24,8 +24,7 @@ exports.getArticleById = (req, res, next) => {
 
 exports.patchArticleById = (req, res, next) => {
   const { article_id } = req.params;
-  const { inc_votes } = req.body;
-  amendArticleById(article_id, inc_votes)
+  amendArticleById(article_id, req.body)
     .then((article) => {
       res.send({ article });
     })
