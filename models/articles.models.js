@@ -46,7 +46,7 @@ exports.amendArticleById = (article_id, reqBody) => {
     .increment("votes", inc_votes)
     .returning("*")
     .then((articles) => {
-      if (articles.length < 1)
+      if (!articles.length)
         return Promise.reject({
           status: 404,
           msg: "Article Not Found.",
