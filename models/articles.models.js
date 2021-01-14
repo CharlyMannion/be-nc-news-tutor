@@ -55,7 +55,7 @@ exports.amendArticleById = (article_id, reqBody) => {
     });
 };
 
-exports.fetchArticles = (sentOrder, sentSortBy) => {
+exports.fetchArticles = (sentOrder, sentSortBy, author) => {
   const order = sentOrder || "desc";
   const sort_by = sentSortBy || "created_at";
   return connection
@@ -64,6 +64,9 @@ exports.fetchArticles = (sentOrder, sentSortBy) => {
     .count("comments AS comment_count")
     .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
     .groupBy("articles.article_id")
+    .modify((query) => {
+      if (author) query.where("articles.author", author);
+    })
     .orderBy(sort_by, order);
   // .then((articles) => {
   //   return articles;

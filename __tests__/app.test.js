@@ -548,6 +548,16 @@ describe("app", () => {
               expect(articles).toBeSortedBy("author");
             });
         });
+        it("status 200: returns articles filtered by author specified in query", () => {
+          return request(app)
+            .get("/api/articles?author=icellusedkars")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              articles.forEach((article) => {
+                expect(article.author).toBe("icellusedkars");
+              });
+            });
+        });
       });
     });
   });
