@@ -430,13 +430,13 @@ describe("app", () => {
       });
 
       describe("POST", () => {
-        it("status: 201: responds with status 201", () => {
+        it("status 201: responds with status 201", () => {
           return request(app)
             .post("/api/articles/1/comments")
             .send({ username: "icellusedkars", body: "I'm a test" })
             .expect(201);
         });
-        it("status: 201: responds with status 201", () => {
+        it("status 201: responds with status 201", () => {
           return request(app)
             .post("/api/articles/1/comments")
             .send({ username: "icellusedkars", body: "I'm a test" })
@@ -444,6 +444,15 @@ describe("app", () => {
             .then((comment) => {
               expect(comment.body.comment.author).toBe("icellusedkars");
               expect(comment.body.comment.body).toBe("I'm a test");
+            });
+        });
+        it("status 400: responds with error if the article is not found", () => {
+          return request(app)
+            .post("/api/articles/99/comments")
+            .send({ username: "icellusedkars", body: "I'm a test" })
+            .expect(404)
+            .then((response) => {
+              expect(response.body.msg).toBe("Article Not Found.");
             });
         });
       });
