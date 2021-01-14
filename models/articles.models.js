@@ -55,20 +55,17 @@ exports.amendArticleById = (article_id, reqBody) => {
     });
 };
 
-exports.fetchArticles = () => {
+exports.fetchArticles = (sentOrder, sentSortBy) => {
+  const order = sentOrder || "desc";
+  const sort_by = sentSortBy || "created_at";
   return connection
     .select("articles.*")
     .from("articles")
     .count("comments AS comment_count")
     .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
     .groupBy("articles.article_id")
-    .orderBy("created_at", "desc")
-    .then((articles) => {
-      // if (!articles)
-      //   return Promise.reject({
-      //     status: 404,
-      //     msg: "Articles Not Found.",
-      //   });
-      return articles;
-    });
+    .orderBy(sort_by, order);
+  // .then((articles) => {
+  //   return articles;
+  // });
 };

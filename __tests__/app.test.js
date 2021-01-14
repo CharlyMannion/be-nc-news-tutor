@@ -540,6 +540,14 @@ describe("app", () => {
               expect(articles).toBeSortedBy("created_at", { descending: true });
             });
         });
+        it("status 200: returns articles sorted by sort_by and order specified in query", () => {
+          return request(app)
+            .get("/api/articles?sort_by=author&order=asc")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles).toBeSortedBy("author");
+            });
+        });
       });
     });
   });
