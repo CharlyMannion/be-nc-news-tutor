@@ -1,4 +1,5 @@
 const {
+  fetchArticles,
   fetchArticleById,
   removeArticleById,
   amendArticleById,
@@ -27,6 +28,14 @@ exports.patchArticleById = (req, res, next) => {
   amendArticleById(article_id, req.body)
     .then((article) => {
       res.send({ article });
+    })
+    .catch(next);
+};
+
+exports.getArticles = (req, res, next) => {
+  fetchArticles()
+    .then((articles) => {
+      res.send({ articles });
     })
     .catch(next);
 };

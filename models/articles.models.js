@@ -59,3 +59,21 @@ exports.amendArticleById = (article_id, reqBody) => {
         });
     });
 };
+
+exports.fetchArticles = () => {
+  return connection
+    .select("articles.*")
+    .from("articles")
+    .count("comments AS comment_count")
+    .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
+    .groupBy("articles.article_id")
+    .orderBy("created_at", "desc")
+    .then((articles) => {
+      // if (!articles)
+      //   return Promise.reject({
+      //     status: 404,
+      //     msg: "Article Not Found.",
+      //   });
+      return articles;
+    });
+};

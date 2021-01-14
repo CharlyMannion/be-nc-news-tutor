@@ -142,7 +142,6 @@ describe("app", () => {
             });
         });
       });
-
       describe("INVALID METHODS", () => {
         it("status 405: for invalid methods POST DELETE, PATCH and PUT for /users/:username", () => {
           const invalidMethods = ["post", "delete", "patch", "put"];
@@ -316,7 +315,6 @@ describe("app", () => {
             });
         });
       });
-
       describe("INVALID METHODS", () => {
         it("status 405: for invalid methods POST and PUT for /articles/:article_id", () => {
           const invalidMethods = ["post", "put"];
@@ -428,7 +426,6 @@ describe("app", () => {
             });
         });
       });
-
       describe("POST", () => {
         it("status 201: responds with status 201", () => {
           return request(app)
@@ -518,6 +515,30 @@ describe("app", () => {
               });
           });
           return Promise.all(promises);
+        });
+      });
+    });
+
+    describe("/articles", () => {
+      describe("GET", () => {
+        it("status 200: responds with an array of articles sorted by date in descending order as default", () => {
+          return request(app)
+            .get("/api/articles")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(Object.keys(articles[0])).toEqual(
+                expect.arrayContaining([
+                  "author",
+                  "title",
+                  "article_id",
+                  "topic",
+                  "created_at",
+                  "votes",
+                  "comment_count",
+                ])
+              );
+              expect(articles).toBeSortedBy("created_at", { descending: true });
+            });
         });
       });
     });
