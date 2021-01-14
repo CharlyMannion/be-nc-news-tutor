@@ -33,8 +33,8 @@ exports.patchArticleById = (req, res, next) => {
 };
 
 exports.getArticles = (req, res, next) => {
-  const { order, sort_by, author } = req.query;
-  fetchArticles(order, sort_by, author)
+  const { order, sort_by, author, topic } = req.query;
+  fetchArticles(order, sort_by, author, topic)
     .then((articles) => {
       res.send({ articles });
     })

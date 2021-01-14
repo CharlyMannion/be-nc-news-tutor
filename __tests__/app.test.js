@@ -558,6 +558,16 @@ describe("app", () => {
               });
             });
         });
+        it("status 200: returns articles filtered by topic specified in query", () => {
+          return request(app)
+            .get("/api/articles?topic=cats")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              articles.forEach((article) => {
+                expect(article.topic).toBe("cats");
+              });
+            });
+        });
       });
     });
   });

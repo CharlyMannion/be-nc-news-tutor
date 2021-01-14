@@ -55,7 +55,7 @@ exports.amendArticleById = (article_id, reqBody) => {
     });
 };
 
-exports.fetchArticles = (sentOrder, sentSortBy, author) => {
+exports.fetchArticles = (sentOrder, sentSortBy, author, topic) => {
   const order = sentOrder || "desc";
   const sort_by = sentSortBy || "created_at";
   return connection
@@ -66,6 +66,7 @@ exports.fetchArticles = (sentOrder, sentSortBy, author) => {
     .groupBy("articles.article_id")
     .modify((query) => {
       if (author) query.where("articles.author", author);
+      if (topic) query.where("articles.topic", topic);
     })
     .orderBy(sort_by, order);
   // .then((articles) => {
