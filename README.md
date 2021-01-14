@@ -109,8 +109,8 @@ DELETE /api/articles/:article_id -> COMPLETE
 PATCH /api/articles/:article_id -> COMPLETE
 GET /api/articles/:article_id -> COMPLETE
 
-POST /api/articles/:article_id/comments
-GET /api/articles/:article_id/comments
+POST /api/articles/:article_id/comments -> COMPLETE
+GET /api/articles/:article_id/comments -> COMPLETE
 
 GET /api/articles
 POST /api/articles
