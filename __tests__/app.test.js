@@ -568,6 +568,22 @@ describe("app", () => {
               });
             });
         });
+        it("status 200: responds with an empty array when author specified in query has no articles", () => {
+          return request(app)
+            .get("/api/articles?author=lurker")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles).toEqual([]);
+            });
+        });
+        it("status 200: responds with an empty array when topic specified in query has no articles", () => {
+          return request(app)
+            .get("/api/articles?topic=paper")
+            .expect(200)
+            .then(({ body: { articles } }) => {
+              expect(articles).toEqual([]);
+            });
+        });
       });
     });
   });
