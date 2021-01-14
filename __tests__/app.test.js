@@ -446,13 +446,31 @@ describe("app", () => {
               expect(comment.body.comment.body).toBe("I'm a test");
             });
         });
-        it("status 400: responds with error if the article is not found", () => {
+        it("status 404: responds with error if the article is not found", () => {
           return request(app)
             .post("/api/articles/99/comments")
             .send({ username: "icellusedkars", body: "I'm a test" })
             .expect(404)
             .then((response) => {
-              expect(response.body.msg).toBe("Article Not Found.");
+              expect(response.body.msg).toBe("Not found.");
+            });
+        });
+        it("status 400: responds with error if request is not a valid article ID", () => {
+          return request(app)
+            .post("/api/articles/notAnId/comments")
+            .send({ username: "icellusedkars", body: "I'm a test" })
+            .expect(400)
+            .then((response) => {
+              expect(response.body.msg).toBe("Bad request.");
+            });
+        });
+        it("status 404: responds with error if request body is not a valid article username", () => {
+          return request(app)
+            .post("/api/articles/1/comments")
+            .send({ username: "nonExistantUser", body: "I'm a test" })
+            .expect(404)
+            .then((response) => {
+              expect(response.body.msg).toBe("Not found.");
             });
         });
       });
