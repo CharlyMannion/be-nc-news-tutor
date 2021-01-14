@@ -44,19 +44,14 @@ exports.amendArticleById = (article_id, reqBody) => {
     .from("articles")
     .where("articles.article_id", article_id)
     .increment("votes", inc_votes)
-    .then(() => {
-      return connection
-        .first("articles.*")
-        .from("articles")
-        .where("articles.article_id", article_id)
-        .then((article) => {
-          if (!article)
-            return Promise.reject({
-              status: 404,
-              msg: "Article Not Found.",
-            });
-          else return article;
+    .returning("*")
+    .then((articles) => {
+      if (articles.length < 1)
+        return Promise.reject({
+          status: 404,
+          msg: "Article Not Found.",
         });
+      else return articles[0];
     });
 };
 
@@ -72,7 +67,7 @@ exports.fetchArticles = () => {
       // if (!articles)
       //   return Promise.reject({
       //     status: 404,
-      //     msg: "Article Not Found.",
+      //     msg: "Articles Not Found.",
       //   });
       return articles;
     });
