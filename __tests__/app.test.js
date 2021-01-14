@@ -446,7 +446,7 @@ describe("app", () => {
               expect(comment.body.comment.body).toBe("I'm a test");
             });
         });
-        it("status 404: responds with error if the article is not found", () => {
+        it("status 404: NOT FOUND responds with error if the article is not found", () => {
           return request(app)
             .post("/api/articles/99/comments")
             .send({ username: "icellusedkars", body: "I'm a test" })
@@ -455,7 +455,16 @@ describe("app", () => {
               expect(response.body.msg).toBe("Not found.");
             });
         });
-        it("status 400: responds with error if request is not a valid article ID", () => {
+        it("status 404: NOT FOUND responds with error if request body is not a valid article username", () => {
+          return request(app)
+            .post("/api/articles/1/comments")
+            .send({ username: "nonExistantUser", body: "I'm a test" })
+            .expect(404)
+            .then((response) => {
+              expect(response.body.msg).toBe("Not found.");
+            });
+        });
+        it("status 400: BAD REQUEST responds with error if request is not a valid article ID", () => {
           return request(app)
             .post("/api/articles/notAnId/comments")
             .send({ username: "icellusedkars", body: "I'm a test" })
@@ -464,14 +473,51 @@ describe("app", () => {
               expect(response.body.msg).toBe("Bad request.");
             });
         });
-        it("status 404: responds with error if request body is not a valid article username", () => {
+        it("status 400: BAD REQUEST when keys on body of request are invalid", () => {
           return request(app)
-            .post("/api/articles/1/comments")
-            .send({ username: "nonExistantUser", body: "I'm a test" })
-            .expect(404)
+            .post("/api/articles/notAnId/comments")
+            .send({ wrong: "icellusedkars", wrong: "I'm a test" })
+            .expect(400)
             .then((response) => {
-              expect(response.body.msg).toBe("Not found.");
+              expect(response.body.msg).toBe("Bad request.");
             });
+        });
+        it("status 400: BAD REQUEST -> Malformed body when keys on body of request are missing", () => {
+          return request(app)
+            .post("/api/articles/notAnId/comments")
+            .send({})
+            .expect(400)
+            .then((response) => {
+              expect(response.body.msg).toBe("Bad request.");
+            });
+        });
+        it("status 400: BAD REQUEST -> Malformed body when there are additional keys on body of request", () => {
+          return request(app)
+            .post("/api/articles/notAnId/comments")
+            .send({
+              username: "icellusedkars",
+              body: "I'm a test",
+              extraKey: "extraValue:",
+            })
+            .expect(400)
+            .then((response) => {
+              expect(response.body.msg).toBe("Bad request.");
+            });
+        });
+      });
+      describe("INVALID METHODS", () => {
+        it("status 405: for invalid methods POST DELETE, PATCH and PUT for /articles/:article_id/comments", () => {
+          const invalidMethods = ["delete", "patch", "put"];
+
+          const promises = invalidMethods.map((method) => {
+            return request(app)
+              [method]("/api/articles/:article_id/comments")
+              .expect(405)
+              .then(({ body: { msg } }) => {
+                expect(msg).toBe("Method Not Allowed.");
+              });
+          });
+          return Promise.all(promises);
         });
       });
     });
