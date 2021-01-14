@@ -32,6 +32,6 @@ exports.addArticleComment = (article_id, body, username) => {
     .insert({ body, article_id, author })
     .returning("*")
     .then((comment) => {
-      return comment[0];
+      return comment;
     });
 };
