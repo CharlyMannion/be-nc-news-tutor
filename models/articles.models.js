@@ -58,18 +58,39 @@ exports.amendArticleById = (article_id, reqBody) => {
 exports.fetchArticles = (sentOrder, sentSortBy, author, topic) => {
   const order = sentOrder || "desc";
   const sort_by = sentSortBy || "created_at";
-  return connection
-    .select("articles.*")
-    .from("articles")
-    .count("comments AS comment_count")
-    .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
-    .groupBy("articles.article_id")
-    .modify((query) => {
-      if (author) query.where("articles.author", author);
-      if (topic) query.where("articles.topic", topic);
-    })
-    .orderBy(sort_by, order);
-  // .then((articles) => {
-  //   return articles;
-  // });
+  const validOrders = ["asc", "desc"];
+  if (validOrders.includes(order)) {
+    return connection
+      .select("articles.*")
+      .from("articles")
+      .count("comments AS comment_count")
+      .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
+      .groupBy("articles.article_id")
+      .modify((query) => {
+        if (author) query.where("articles.author", author);
+        if (topic) query.where("articles.topic", topic);
+      })
+      .orderBy(sort_by, order)
+      .then((articles) => {
+        if (articles.length) return [articles];
+        else {
+          const usersPromise = connection
+            .select("*")
+            .from("users")
+            .modify((query) => {
+              if (author) query.where("users.username", author);
+            });
+          return Promise.all([articles, usersPromise]);
+        }
+      })
+      .then(([articles, users]) => {
+        if (!users || users.length) return articles;
+        else return Promise.reject({ status: 404, msg: "User not found." });
+      });
+  } else {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad request: invalid order query.",
+    });
+  }
 };

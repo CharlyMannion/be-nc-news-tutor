@@ -584,6 +584,30 @@ describe("app", () => {
               expect(articles).toEqual([]);
             });
         });
+        it("status 400: BAD REQUEST when sort_by column does not exist", () => {
+          return request(app)
+            .get("/api/articles?sort_by=wrong")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad request.");
+            });
+        });
+        it("status 400: BAD REQUEST when order query is invalid", () => {
+          return request(app)
+            .get("/api/articles?order=wrong")
+            .expect(400)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Bad request: invalid order query.");
+            });
+        });
+        it("status 404: NOT FOUND when author in query does not exist", () => {
+          return request(app)
+            .get("/api/articles?author=nonExistant")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("User not found.");
+            });
+        });
       });
     });
   });
