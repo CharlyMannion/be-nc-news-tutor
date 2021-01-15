@@ -608,6 +608,14 @@ describe("app", () => {
               expect(msg).toBe("User not found.");
             });
         });
+        it("status 404: NOT FOUND when topic in query does not exist", () => {
+          return request(app)
+            .get("/api/articles?topic=nonExistant")
+            .expect(404)
+            .then(({ body: { msg } }) => {
+              expect(msg).toBe("Topic not found.");
+            });
+        });
       });
     });
   });

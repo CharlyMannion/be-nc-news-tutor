@@ -60,33 +60,44 @@ exports.fetchArticles = (sentOrder, sentSortBy, author, topic) => {
   const sort_by = sentSortBy || "created_at";
   const validOrders = ["asc", "desc"];
   if (validOrders.includes(order)) {
-    return connection
-      .select("articles.*")
-      .from("articles")
-      .count("comments AS comment_count")
-      .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
-      .groupBy("articles.article_id")
-      .modify((query) => {
-        if (author) query.where("articles.author", author);
-        if (topic) query.where("articles.topic", topic);
-      })
-      .orderBy(sort_by, order)
-      .then((articles) => {
-        if (articles.length) return [articles];
-        else {
-          const usersPromise = connection
-            .select("*")
-            .from("users")
-            .modify((query) => {
-              if (author) query.where("users.username", author);
-            });
-          return Promise.all([articles, usersPromise]);
-        }
-      })
-      .then(([articles, users]) => {
-        if (!users || users.length) return articles;
-        else return Promise.reject({ status: 404, msg: "User not found." });
-      });
+    return (
+      connection
+        .select("articles.*")
+        .from("articles")
+        .count("comments AS comment_count")
+        .leftJoin("comments", "comments.article_id", "=", "articles.article_id")
+        .groupBy("articles.article_id")
+        .modify((query) => {
+          if (author) query.where("articles.author", author);
+          if (topic) query.where("articles.topic", topic);
+        })
+        .orderBy(sort_by, order)
+        .then((articles) => {
+          if (articles.length) return [articles];
+          else {
+            const usersPromise = connection
+              .select("*")
+              .from("users")
+              .modify((query) => {
+                if (author) query.where("users.username", author);
+              });
+            // const topicsPromise = connection
+            //   .select("*")
+            //   .from("topics")
+            //   .modify((query) => {
+            //     if (author) query.where("topics.slug", topic);
+            //   });
+            // return Promise.all([articles, usersPromise, topicsPromise]);
+            return Promise.all([articles, usersPromise]);
+          }
+        })
+        // .then(([articles, users, topics]) => {
+        .then(([articles, users]) => {
+          if (!users || users.length) return articles;
+          // if (!users || users.length || topics.length || !topics) return articles;
+          else return Promise.reject({ status: 404, msg: "User not found." });
+        })
+    );
   } else {
     return Promise.reject({
       status: 400,
